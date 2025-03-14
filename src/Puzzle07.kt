@@ -6,8 +6,9 @@ import java.time.ZoneId
 fun main(args: Array<String>) {
   val haliZone = ZoneId.of("America/Halifax")
   val santiZone = ZoneId.of("America/Santiago")
+  val whitespace = """\s+""".toRegex()
   println(File(args[0]).readLines().mapIndexed { i, line ->
-    val (timeStr, corr, wrong) = line.split("""\s+""".toRegex())
+    val (timeStr, corr, wrong) = line.split(whitespace)
     val t = OffsetDateTime.parse(timeStr)
 
     val halifax = t.toZonedDateTime().withZoneSameInstant(haliZone)
