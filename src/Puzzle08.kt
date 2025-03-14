@@ -4,8 +4,7 @@ import java.text.Normalizer
 
 fun main(args: Array<String>) {
   println(File(args[0]).readLines().count { passwd ->
-    val normalized = Normalizer.normalize(passwd.lowercase(), Normalizer.Form.NFKD)
-      .replace("[^a-z]".toRegex(), "")
+    val normalized = Normalizer.normalize(passwd.lowercase(), Normalizer.Form.NFKD).replace("[^a-z]".toRegex(), "")
     // a length of at least 4 and at most 12
     passwd.length in 4..12 &&
         // at least one digit
