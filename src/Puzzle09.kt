@@ -29,5 +29,5 @@ fun main(args: Array<String>) {
   println(namesWithDates.filterValues { dates ->
     val format = VALID_FORMATS.first { format -> dates.all { validDate(it, format) } }
     dates.any { LocalDate.parse(it, format) == NINE_ELEVEN }
-  }.map { it.key }.sorted().joinToString(" "))
+  }.keys.sorted().joinToString(" "))
 }
