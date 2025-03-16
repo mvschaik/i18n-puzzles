@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
     val (dateStr, namesStr) = line.split(": ")
     val names = namesStr.split(", ").map(String::trim)
     names.associateWith { dateStr }
-  }.flatMap { map -> map.entries }.groupBy({ it.key }, { it.value })
+  }.flatMap { it.entries }.groupBy({ it.key }, { it.value })
 
   println(namesWithDates.filterValues { dates ->
     val format = VALID_FORMATS.first { format -> dates.all { validDate(it, format) } }
