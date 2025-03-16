@@ -8,10 +8,10 @@ val VALID_FORMATS = listOf("yy-MM-dd", "yy-dd-MM", "dd-MM-yy", "MM-dd-yy").map(D
 val NINE_ELEVEN: LocalDate = LocalDate.of(2001, 9, 11)
 
 fun validDate(dateStr: String, format: DateTimeFormatter): Boolean {
-  try {
-    return LocalDate.parse(dateStr, format).format(format) == dateStr
+  return try {
+    LocalDate.parse(dateStr, format).format(format) == dateStr
   } catch (e: DateTimeParseException) {
-    return false
+    false
   }
 }
 
