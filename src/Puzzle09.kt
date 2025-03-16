@@ -7,12 +7,10 @@ import java.time.format.DateTimeParseException
 val VALID_FORMATS = listOf("yy-MM-dd", "yy-dd-MM", "dd-MM-yy", "MM-dd-yy").map(DateTimeFormatter::ofPattern)
 val NINE_ELEVEN: LocalDate = LocalDate.of(2001, 9, 11)
 
-fun validDate(dateStr: String, format: DateTimeFormatter): Boolean {
-  return try {
-    LocalDate.parse(dateStr, format).format(format) == dateStr
-  } catch (e: DateTimeParseException) {
-    false
-  }
+fun validDate(dateStr: String, format: DateTimeFormatter) = try {
+  LocalDate.parse(dateStr, format).format(format) == dateStr
+} catch (e: DateTimeParseException) {
+  false
 }
 
 fun main(args: Array<String>) {
