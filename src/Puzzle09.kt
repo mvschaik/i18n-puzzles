@@ -4,16 +4,12 @@ import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
 
-val VALID_DATE_RANGE = LocalDate.of(1920, 1, 1)..LocalDate.of(2020, 1, 1)
 val VALID_FORMATS = listOf("yy-MM-dd", "yy-dd-MM", "dd-MM-yy", "MM-dd-yy").map(DateTimeFormatter::ofPattern)
 val NINE_ELEVEN: LocalDate = LocalDate.of(2001, 9, 11)
 
 fun validDate(dateStr: String, format: DateTimeFormatter): Boolean {
   try {
-    var date = LocalDate.parse(dateStr, format)
-    // Java parses YearOfEra between 2000 and 2099.
-    if (date.year > 2020) date = date.withYear(date.year - 100)
-    return date.format(format) == dateStr && date in VALID_DATE_RANGE
+    return LocalDate.parse(dateStr, format).format(format) == dateStr
   } catch (e: DateTimeParseException) {
     return false
   }
