@@ -1,8 +1,8 @@
 import java.io.File
 
 
-val ALPHA = "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"
-val alpha = "αβγδεζηθικλμνξοπρστυφχψω"
+const val ALPHA = "ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ"
+const val alpha = "αβγδεζηθικλμνξοπρστυφχψω"
 
 fun caesar(s: String, n: Int) = s.map { c ->
   when (c) {
