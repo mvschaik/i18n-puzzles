@@ -3,13 +3,17 @@ import java.io.File
 import java.text.Normalizer
 
 
+fun <T> List<List<T>>.combinations(): List<List<T>> = fold(listOf(listOf())) { prefixes, elements ->
+  prefixes.flatMap { prefix -> elements.map { prefix + listOf(it) } }
+}
+
 fun variants(password: String): List<String> {
   val normalized = Normalizer.normalize(password, Normalizer.Form.NFC)
   val charGroups = normalized.map { c ->
     val denormalized = Normalizer.normalize("$c", Normalizer.Form.NFD)
     if ("$c" == denormalized) listOf(denormalized) else listOf(denormalized, "$c")
   }
-  return charGroups.reduce { acc, chars -> acc.flatMap { partial -> chars.map { partial + it } } }
+  return charGroups.combinations().map { it.joinToString("") }
 }
 
 fun main(args: Array<String>) {
