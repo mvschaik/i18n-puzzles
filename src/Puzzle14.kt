@@ -2,7 +2,7 @@ import java.io.File
 import java.math.BigInteger
 
 
-const val numbers = "0一二三四五六七八九"//十"
+const val numbers = "0一二三四五六七八九"
 
 val modifiers = mapOf(
   '十' to 10L,
@@ -11,8 +11,7 @@ val modifiers = mapOf(
 )
 
 val myriads = mapOf(
-  '万' to 10_000L,
-  '億' to 100_000_000L
+  '万' to 10_000L, '億' to 100_000_000L
 )
 
 val units = mapOf(
@@ -29,8 +28,9 @@ val units = mapOf(
 
 class Rational(val n: BigInteger, val d: BigInteger) {
   constructor(n: Int, d: Int) : this(n.toBigInteger(), d.toBigInteger())
+
   operator fun times(r: Rational): Rational = n.times(r.n).divBy(r.d.times(d))
-  fun toLong() = (n/d).toLong()
+  fun toLong() = (n / d).toLong()
   infix fun BigInteger.divBy(r2: BigInteger): Rational = Rational(this, r2)
 }
 
@@ -44,11 +44,13 @@ fun parseNum(s: String): Long {
         currentMyriad += currentGroup
         currentGroup = numbers.indexOf(c).toLong()
       }
+
       in modifiers -> {
         if (currentGroup == 0L) currentGroup = 1
         currentMyriad += currentGroup * modifiers[c]!!
         currentGroup = 0
       }
+
       in myriads -> {
         currentMyriad += currentGroup
         currentGroup = 0
@@ -61,8 +63,9 @@ fun parseNum(s: String): Long {
   return n + currentMyriad + currentGroup
 }
 
-fun parseToM2(s: String) =
-  Rational(parseNum(s.substring(0..s.length - 2)).toBigInteger(), 1.toBigInteger()) * units[s[s.length - 1]]!!
+fun parseToM2(s: String) = Rational(
+  parseNum(s.substring(0..s.length - 2)).toBigInteger(), 1.toBigInteger()
+) * units[s[s.length - 1]]!!
 
 fun main(args: Array<String>) {
   assert(parseNum("四") == 4L)
