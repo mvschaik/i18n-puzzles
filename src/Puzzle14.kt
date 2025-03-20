@@ -11,7 +11,7 @@ val modifiers = mapOf(
 )
 
 val myriads = mapOf(
-  '万' to 10_000L, '億' to 100_000_000L
+  '万' to 10_000L, '億' to 10_000 * 10_000L
 )
 
 val units = mapOf(
@@ -26,12 +26,12 @@ val units = mapOf(
   '毛' to Rational(10, 33 * 10_000),
 )
 
-class Rational(val n: BigInteger, val d: BigInteger) {
+class Rational(private val n: BigInteger, private val d: BigInteger) {
   constructor(n: Int, d: Int) : this(n.toBigInteger(), d.toBigInteger())
+  constructor(n: Long, d: Long) : this(n.toBigInteger(), d.toBigInteger())
 
-  operator fun times(r: Rational): Rational = n.times(r.n).divBy(r.d.times(d))
+  operator fun times(r: Rational): Rational = Rational(n.times(r.n), r.d.times(d))
   fun toLong() = (n / d).toLong()
-  infix fun BigInteger.divBy(r2: BigInteger): Rational = Rational(this, r2)
 }
 
 fun parseNum(s: String): Long {
@@ -64,7 +64,7 @@ fun parseNum(s: String): Long {
 }
 
 fun parseToM2(s: String) = Rational(
-  parseNum(s.substring(0..s.length - 2)).toBigInteger(), 1.toBigInteger()
+  parseNum(s.substring(0..s.length - 2)), 1
 ) * units[s[s.length - 1]]!!
 
 fun main(args: Array<String>) {
