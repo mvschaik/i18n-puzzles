@@ -23,12 +23,12 @@ class Schedule(private val times: List<Pair<Instant, Boolean>>) {
   operator fun plus(other: Schedule): Schedule {
     val newTimes = mutableListOf<Pair<Instant, Boolean>>()
     var numActive = 0
-    for ((t, enabled) in (times + other.times).sortedBy { it.first }) {
-      if (enabled && numActive == 0) {
+    for ((t, active) in (times + other.times).sortedBy { it.first }) {
+      if (active && numActive == 0) {
         newTimes += t to true
       }
-      numActive += if (enabled) 1 else -1
-      if (!enabled && numActive == 0) {
+      numActive += if (active) 1 else -1
+      if (!active && numActive == 0) {
         newTimes += t to false
       }
     }
@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
 
   var s = Schedule()
   offices.forEach { office ->
-    var t = (searchRange.start - Duration.of(7, ChronoUnit.DAYS)).withZoneSameInstant(office.tz)
+    var t = searchRange.start.withZoneSameInstant(office.tz) - Duration.of(7, ChronoUnit.DAYS)
     var officeSchedule = Schedule()
     repeat(54) {
       for (day in listOf(
@@ -62,9 +62,8 @@ fun main(args: Array<String>) {
       }
     }
     for (holiday in office.holidays) {
-      officeSchedule -= Schedule(
-        holiday.atStartOfDay(office.tz).toInstant(), holiday.atStartOfDay(office.tz).plusDays(1).toInstant()
-      )
+      val start = holiday.atStartOfDay(office.tz)
+      officeSchedule -= Schedule(start.toInstant(), start.plusDays(1).toInstant())
     }
     s += officeSchedule
   }
@@ -83,9 +82,8 @@ fun main(args: Array<String>) {
     }
 
     for (holiday in customer.holidays) {
-      customerSchedule -= Schedule(
-        holiday.atStartOfDay(customer.tz).toInstant(), holiday.atStartOfDay(customer.tz).plusDays(1).toInstant()
-      )
+      val start = holiday.atStartOfDay(customer.tz)
+      customerSchedule -= Schedule(start.toInstant(), start.plusDays(1).toInstant())
     }
 
     (customerSchedule - s).ranges().sumOf { r -> r.start.until(r.endInclusive, ChronoUnit.MINUTES) }
