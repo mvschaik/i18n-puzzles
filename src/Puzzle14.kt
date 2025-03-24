@@ -1,5 +1,4 @@
 import java.io.File
-import java.math.BigInteger
 
 
 const val numbers = "0一二三四五六七八九"
@@ -25,14 +24,6 @@ val units = mapOf(
   '厘' to Rational(10, 33 * 1000),
   '毛' to Rational(10, 33 * 10_000),
 )
-
-class Rational(private val n: BigInteger, private val d: BigInteger) {
-  constructor(n: Int, d: Int) : this(n.toBigInteger(), d.toBigInteger())
-  constructor(n: Long, d: Long) : this(n.toBigInteger(), d.toBigInteger())
-
-  operator fun times(r: Rational): Rational = Rational(n.times(r.n), r.d.times(d))
-  fun toLong() = (n / d).toLong()
-}
 
 fun parseNum(s: String): Long {
   var n = 0L
